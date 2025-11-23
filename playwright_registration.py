@@ -23,6 +23,7 @@ with sync_playwright() as playwright:
     expect(Dashboard_text).to_be_visible()
     expect(Dashboard_text).to_have_text('Dashboard')
 
+
     page.wait_for_timeout(5000)
 
 
