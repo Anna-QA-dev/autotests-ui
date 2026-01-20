@@ -47,11 +47,3 @@ def chromium_page_with_state(initialize_browser_state):
 
         context.close()
         browser.close()
-
-
-
-
-
-
-
-
