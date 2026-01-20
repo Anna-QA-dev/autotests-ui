@@ -10,4 +10,7 @@ with sync_playwright() as playwright:
 
     login_button = page.get_by_test_id('login-page-login-button')
     expect(login_button).to_be_disabled()
+
     page.wait_for_timeout(5000)
+
+
