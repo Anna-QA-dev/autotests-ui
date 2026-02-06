@@ -9,3 +9,4 @@ class BasePage:
 
     def reload(self):  # Метод для перезагрузки страницы
         self.page.reload(wait_until='networkidle')
+
