@@ -1,20 +1,29 @@
 import pytest
-from playwright.sync_api import sync_playwright, Page, Playwright
+from playwright.sync_api import sync_playwright, Page
+
 
 @pytest.fixture()
 def chromium_page() -> Page:
+    """Фикстура для создания новой страницы (без состояния авторизации)"""
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=False)
-        yield browser.new_page()
+        context = browser.new_context()
+        page = context.new_page()
+        yield page
+        # Закрываем в обратном порядке
+        context.close()
+        browser.close()
 
 
 @pytest.fixture(scope="session")
 def initialize_browser_state():
+    """Инициализация состояния браузера (регистрация пользователя)"""
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=False)
         context = browser.new_context()
         page = context.new_page()
 
+        # Регистрация пользователя
         page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration")
 
         email_input = page.get_by_test_id('registration-form-email-input').locator('input')
@@ -31,19 +40,22 @@ def initialize_browser_state():
 
         page.wait_for_timeout(3000)
 
+        # Сохраняем состояние
         context.storage_state(path="browser-state.json")
+
+        # Закрываем
+        context.close()
         browser.close()
 
 
-
-@pytest.fixture(scope="session")
-def chromium_page_with_state(initialize_browser_state):
+@pytest.fixture()
+def chromium_page_with_state(initialize_browser_state) -> Page:
+    """Фикстура для создания страницы с сохраненным состоянием авторизации"""
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=False)
         context = browser.new_context(storage_state="browser-state.json")
         page = context.new_page()
-
         yield page
-
+        # Закрываем в обратном порядке
         context.close()
         browser.close()
