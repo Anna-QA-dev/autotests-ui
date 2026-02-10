@@ -1,15 +1,25 @@
-import pytest
+from playwright.sync_api import Page
+from components.authentication.registration_form_component import RegistrationFormComponent
+from elements.button import Button
+from elements.link import Link
+from pages.base_page import BasePage
 
+class RegistrationPage(BasePage):
+    def __init__(self, page: Page):
+        super().__init__(page)
 
-@pytest.mark.regression
-@pytest.mark.registration
-def test_successful_registration(registration_page, dashboard_page):
+        self.registration_form = RegistrationFormComponent(page)
+        self.login_link = Link(page, 'registration-page-login-link', 'Login')
+        self.registration_button = Button(page, 'registration-page-registration-button', 'Registration')
 
+    def fill_registration_form(self, email: str, username: str, password: str):
+        self.registration_form.fill(email=email, username=username, password=password)
 
-    registration_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration")
-    registration_page.fill_registration_form(email='email', username='username', password='password')
-    registration_page.click_registration_button()
-    dashboard_page.check_visible_dashboard_title()
+    def click_login_link(self):
+        self.login_link.click()
+
+    def click_registration_button(self):
+        self.registration_button.click()
 
 
 
