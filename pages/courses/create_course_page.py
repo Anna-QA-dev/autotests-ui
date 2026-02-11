@@ -14,13 +14,18 @@ class CreateCoursePage(BasePage):
         super().__init__(page)
 
         self.toolbar_view = CreateCourseToolbarViewComponent(page)
+        self.create_course_toolbar_view = self.toolbar_view
+
         self.exercises_toolbar_view = CreateCourseExercisesToolbarViewComponent(page)
+        self.create_course_exercises_toolbar_view = self.exercises_toolbar_view  # ← КЛЮЧЕВАЯ СТРОКА
+
         self.navbar = NavbarComponent(page)
         self.course_form = CreateCourseFormComponent(page)
+        self.create_course_form = self.course_form
+
         self.image_upload_widget = ImageUploadWidgetComponent(page, 'create-course-preview')
         self.exercises_empty_view = EmptyViewComponent(page, 'create-course-exercises')
         self.create_exercise_form = CreateCourseExerciseFormComponent(page)
-
 
     def check_visible_create_course_title(self):
         self.toolbar_view.check_visible(is_create_course_disabled=True)
@@ -35,11 +40,11 @@ class CreateCoursePage(BasePage):
         self.toolbar_view.check_visible(is_create_course_disabled=True)
 
     def check_visible_create_course_form(self, title: str, estimated_time: str, description: str,
-        max_score: str, min_score: str):
+                                         max_score: str, min_score: str):
         self.course_form.check_visible(title, estimated_time, description, max_score, min_score)
 
     def fill_create_course_form(self, title: str, estimated_time: str, description: str,
-        max_score: str, min_score: str):
+                                max_score: str, min_score: str):
         self.course_form.fill(title, estimated_time, description, max_score, min_score)
 
     def check_visible_exercises_title(self):
@@ -56,3 +61,4 @@ class CreateCoursePage(BasePage):
             title='There is no exercises',
             description='Click on "Create exercise" button to create new exercise'
         )
+

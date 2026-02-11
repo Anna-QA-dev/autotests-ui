@@ -1,15 +1,20 @@
-from playwright.sync_api import Page
 import re
+
+from playwright.sync_api import Page
+
 from components.base_component import BaseComponent
-from elements.text import Text
 from elements.button import Button
+from elements.text import Text
+
 
 class CoursesListToolbarViewComponent(BaseComponent):
     def __init__(self, page: Page):
         super().__init__(page)
 
         self.title = Text(page, 'courses-list-toolbar-title-text', 'Title')
-        self.create_course_button = Button(page, 'courses-list-toolbar-create-course-button', 'Create course')
+        self.create_course_button = Button(
+            page, 'courses-list-toolbar-create-course-button', 'Create course'
+        )
 
     def check_visible(self):
         self.title.check_visible()
@@ -19,5 +24,4 @@ class CoursesListToolbarViewComponent(BaseComponent):
 
     def click_create_course_button(self):
         self.create_course_button.click()
-        # Дополнительно проверим, что произошел редирект на правильную страницу
         self.check_current_url(re.compile(".*/#/courses/create"))

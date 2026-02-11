@@ -12,6 +12,7 @@ class CourseViewComponent(BaseComponent):
 
         self.menu = CourseViewMenuComponent(page)
 
+
         self.title = Text(page, 'course-widget-title-text', 'Title')
         self.image = Image(page, 'course-preview-image', 'Preview')
         self.max_score_text = Text(page, 'course-max-score-info-row-view-text', 'Max score')
@@ -33,3 +34,4 @@ class CourseViewComponent(BaseComponent):
 
         self.estimated_time_text.check_visible(nth=index)
         self.estimated_time_text.check_have_text(f"Estimated time: {estimated_time}", nth=index)
+

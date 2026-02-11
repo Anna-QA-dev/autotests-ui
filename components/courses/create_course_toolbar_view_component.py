@@ -1,25 +1,50 @@
 from playwright.sync_api import Page
+
 from components.base_component import BaseComponent
-from elements.text import Text
 from elements.button import Button
+from elements.text import Text
+
 
 class CreateCourseToolbarViewComponent(BaseComponent):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self.create_course_title = Text(page, 'create-course-toolbar-title-text', 'Create course title')
-        self.create_course_button = Button(page, 'create-course-toolbar-create-course-button', 'Create course')
+        self.title = Text(page, 'create-course-toolbar-title-text', 'Title')
+        self.create_course_button = Button(
+            page, 'create-course-toolbar-create-course-button', 'Create course'
+        )
+        self.update_course_button = Button(
+            page, 'create-course-toolbar-create-course-button', 'Update course'
+        )
 
-    def check_visible(self, is_create_course_disabled: bool = True):
-        self.create_course_title.check_visible()
-        self.create_course_title.check_have_text('Create course')
+    def check_visible(self, mode: str = 'create'):
+        """
+        Проверка видимости тулбара.
 
-        self.create_course_button.check_visible()
+        Args:
+            mode: Режим страницы ('create' или 'update')
+        """
+        self.title.check_visible()
 
-        if is_create_course_disabled:
-            self.create_course_button.check_disabled()
+        if mode == 'create':
+            self.title.check_have_text('Create course')
+            self.create_course_button.check_visible()
         else:
-            self.create_course_button.check_enabled()
+            self.title.check_have_text('Update course')
+            self.update_course_button.check_visible()
 
     def click_create_course_button(self):
+        """Нажатие кнопки создания курса"""
         self.create_course_button.click()
+
+    def click_update_course_button(self):
+        """Нажатие кнопки обновления курса"""
+        self.update_course_button.click()
+
+    def check_disabled_create_course_button(self):
+        """Проверка, что кнопка создания отключена"""
+        self.create_course_button.check_disabled()
+
+    def check_disabled_update_course_button(self):
+        """Проверка, что кнопка обновления отключена"""
+        self.update_course_button.check_disabled()
