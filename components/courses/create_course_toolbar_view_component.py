@@ -1,5 +1,5 @@
 from playwright.sync_api import Page
-
+import allure
 from components.base_component import BaseComponent
 from elements.button import Button
 from elements.text import Text
@@ -17,13 +17,9 @@ class CreateCourseToolbarViewComponent(BaseComponent):
             page, 'create-course-toolbar-create-course-button', 'Update course'
         )
 
+    @allure.step('Check visible create course toolbar in {mode} mode')
     def check_visible(self, mode: str = 'create'):
-        """
-        Проверка видимости тулбара.
 
-        Args:
-            mode: Режим страницы ('create' или 'update')
-        """
         self.title.check_visible()
 
         if mode == 'create':
@@ -41,10 +37,12 @@ class CreateCourseToolbarViewComponent(BaseComponent):
         """Нажатие кнопки обновления курса"""
         self.update_course_button.click()
 
+    @allure.step('Check that create course button is disabled')
     def check_disabled_create_course_button(self):
         """Проверка, что кнопка создания отключена"""
         self.create_course_button.check_disabled()
 
+    @allure.step('Check that update course button is disabled')
     def check_disabled_update_course_button(self):
         """Проверка, что кнопка обновления отключена"""
         self.update_course_button.check_disabled()
